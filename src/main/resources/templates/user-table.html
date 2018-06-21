@@ -52,7 +52,7 @@
             ],
             idSrc: 'id'
         })
-
+        // 최근 버전의 API가 DataTable 로 바뀌었다. 대소문자를 구별 하니 주의.
         table = $('#simple-data-table').DataTable({
             ajax: {
                 url: '/api/user/find',
@@ -92,7 +92,6 @@
 
     function searchName() {
         'use strict'
-        // 최근 버전의 API가 DataTable 로 바뀌었다. 대소문자를 구별 하니 주의.
         table.ajax.reload();
 
     }
