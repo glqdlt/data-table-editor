@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.17/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.6/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="/css/dataTables.editor.css">
+</head>
+<body>
+<div id="draw-zone">
+    <table id="simple-data-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>id</th>
+            <th>name</th>
+            <th>sex</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.17/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js"></script>
+<script src="/js/dataTables.editor.js"></script>
+<script>
+    'use strict'
+    let editor;
+    $(document).ready(function () {
+        editor = new $.fn.dataTable.Editor({
+            ajax: {
+                url: '/api/user/',
+                method: 'post'
+            },
+            table: '#simple-data-table',
+            fields: [
+                {label: 'ID', name: 'id'},
+                {label: 'Name', name: 'name'}
+            ],
+            idSrc : 'id'
+        })
+
+        $('#simple-data-table').dataTable({
+            ajax: {
+                url: '/api/user/find/all',
+                method: 'get',
+                data: function (call) {
+                    call.message = 'hi';
+                },
+                error: function (err) {
+                    return err;
+                }
+            },
+            searching: false,
+            ordering: false,
+            severSide: false,
+            processing: true,
+            bPaginate: false,
+            select: 'single',
+            dom: 'Bfrtip',
+            buttons: [
+                {extend: "create", editor: editor},
+                {extend: "edit", editor: editor},
+                {extend: "remove", editor: editor}
+            ],
+            columns: [
+                {
+                    data: null,
+                    defaultContent: '',
+                    className: 'select-checkbox',
+                    orderable: false
+                },
+                {data: 'id'},
+                {data: 'name'},
+                {data: 'sex'}
+            ]
+        })
+    });
+</script>
+</body>
+</html>
