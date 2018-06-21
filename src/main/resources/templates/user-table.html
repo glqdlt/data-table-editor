@@ -10,6 +10,14 @@
 </head>
 <body>
 <div id="draw-zone">
+    <div>
+        <select id="search-type">
+            <option value="1">name</option>
+            <option value="2">sex</option>
+        </select>
+        <input id="search-value" type="text">
+        <button onclick="searchName()">Search</button>
+    </div>
     <table id="simple-data-table">
         <thead>
         <tr>
@@ -30,6 +38,7 @@
 <script>
     'use strict'
     let editor;
+    let table;
     $(document).ready(function () {
         editor = new $.fn.dataTable.Editor({
             ajax: {
@@ -41,15 +50,16 @@
                 {label: 'ID', name: 'id'},
                 {label: 'Name', name: 'name'}
             ],
-            idSrc : 'id'
+            idSrc: 'id'
         })
 
-        $('#simple-data-table').dataTable({
+        table = $('#simple-data-table').DataTable({
             ajax: {
-                url: '/api/user/find/all',
+                url: '/api/user/find',
                 method: 'get',
-                data: function (call) {
-                    call.message = 'hi';
+                data: function (req) {
+                    req.searchType = $('#search-type option:selected').val();
+                    req.keyWord =$('#search-value').val();
                 },
                 error: function (err) {
                     return err;
@@ -59,7 +69,7 @@
             ordering: false,
             severSide: false,
             processing: true,
-            bPaginate: false,
+            // bPaginate: false,
             select: 'single',
             dom: 'Bfrtip',
             buttons: [
@@ -79,6 +89,13 @@
             ]
         })
     });
+
+    function searchName() {
+        'use strict'
+        // 최근 버전의 API가 DataTable 로 바뀌었다. 대소문자를 구별 하니 주의.
+        table.ajax.reload();
+
+    }
 </script>
 </body>
 </html>
