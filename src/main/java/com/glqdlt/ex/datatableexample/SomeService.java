@@ -23,11 +23,14 @@ public class SomeService {
     }
 
     public List<User> findUsers() {
-        List<User> users = data;
-        return users;
+        return data;
     }
 
     public List<User> findUser(String keyWord) {
         return data.stream().filter(x -> x.getName().equals(keyWord)).collect(Collectors.toList());
+    }
+
+    public void removeUser(Integer no) {
+        log.info("remove ==> {}",data.get(no));
     }
 }

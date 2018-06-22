@@ -42,8 +42,32 @@
     $(document).ready(function () {
         editor = new $.fn.dataTable.Editor({
             ajax: {
-                url: '/api/user/',
-                method: 'post'
+                edit: {
+                    url: '/api/user/edit',
+                    method: 'post',
+                    data :function(data){
+                        console.log(data);
+                        console.log($('#simple-data-table tr').hasClass('selected').val());
+                        let _data;
+                        for(let x in data.data){
+                            _data = data.data[x];
+                        }
+                        console.log(_data);
+                        return _data;
+                    }
+                },
+                remove: {
+                    url: '/api/user/remove',
+                    method: 'post',
+                    data: function (data) {
+                        let _data;
+                        for(let x in data.data){
+                            _data = data.data[x];
+                        }
+                        console.log(_data);
+                        return _data;
+                    }
+                }
             },
             table: '#simple-data-table',
             fields: [
@@ -58,7 +82,7 @@
                 method: 'get',
                 data: function (req) {
                     req.searchType = $('#search-type option:selected').val();
-                    req.keyWord =$('#search-value').val();
+                    req.keyWord = $('#search-value').val();
                 },
                 error: function (err) {
                     return err;
