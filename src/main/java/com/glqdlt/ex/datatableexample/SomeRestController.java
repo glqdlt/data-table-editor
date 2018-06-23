@@ -21,6 +21,7 @@ public class SomeRestController {
     @GetMapping("/api/user/find")
     public DataTableVo<User> findUsers(@RequestParam(name = "searchType") Integer searchType, @RequestParam(name = "keyWord") String keyWord) {
         log.info("type : {}, keyword : {}", searchType, keyWord);
+//        draw는 클릭 몇번했는지에 대해 체킹하고자 하는 것으로 암.
         if (searchType == 1 && !keyWord.equals("")) {
             List<User> user = service.findUser(keyWord);
             return new DataTableVo<>(user, 1, user.size(), user.size());
@@ -40,7 +41,8 @@ public class SomeRestController {
     @PostMapping("/api/user/edit")
     public ResultEditorVO<Map<String, String>> editUser(@RequestParam(value = "id") String userId,
                                                         @RequestParam(value = "sex") User.UserSex sex,
-                                                        @RequestParam(value = "name") String name) {
+                                                        @RequestParam(value = "name") String name,
+                                                        @RequestParam(value = "birthday") String day) {
 
         ResultEditorVO<Map<String, String>> result = new ResultEditorVO<>();
         List<Map<String, String>> list = new ArrayList<>();
@@ -48,8 +50,10 @@ public class SomeRestController {
         data.put("id",userId);
         data.put("sex",User.UserSex.Man.name());
         data.put("name",name);
+        data.put("birthday",day);
         list.add(data);
         result.setData(list);
+//        return {data : {id : userId, sex : UserSexMan.name, name : name, birthday: day}} 으로 리턴주면 jquery editor 는 이에 맞게 location.reload() 안하고도 데이터를 갱신한다.
         return result;
     }
 }
