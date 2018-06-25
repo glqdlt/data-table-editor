@@ -28,6 +28,23 @@
     </table>
 </div>
 
+
+<!--아래처럼 custorm Form으로도 할수 있고, editor에 직접 선언할수도있다.-->
+<!--<div id="customForm">-->
+    <!--<fieldset class="office">-->
+        <!--<legend>Office</legend>-->
+            <!--<select editor-field name="sex">-->
+                <!--<option value="MAN">man</option>-->
+                <!--<option value="WOMAN">woman</option>-->
+            <!--</select>-->
+    <!--</fieldset>-->
+    <!--<fieldset class="hr">-->
+        <!--<legend>HR info</legend>-->
+        <!--<editor-field name="name"></editor-field>-->
+    <!--</fieldset>-->
+<!--</div>-->
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 <script type="text/javascript" src="/DataTables/datatables.min.js"></script>
 <script>
@@ -58,13 +75,34 @@
                         }
                         return _data;
                     }
-                }
+                },
+
+                create :{
+                    url : '/api/user/edit',
+                    method : 'post',
+                    data : function(data){
+                        let _data;
+                        for(let x in data.data){
+                            _data = data.dta[x];
+                        }
+                        return _data;
+                    }
+                },
             },
+            // template: '#customForm',
             table: '#simple-data-table',
             fields: [
                 // type : hidden 에 관한 정보 https://editor.datatables.net/reference/field/
                 {label: 'id', name: 'id', type: 'hidden'},
-                {label: 'sex', name: 'sex', type: 'hidden'},
+                // type : 'radio'
+                // type : 'select'
+                {
+                    label: 'sex', name: 'sex', type: 'radio', options: [
+                        {label: "MAN", value: 'Man'},
+                        {label: "WOMAN", value: 'Woman'}
+                    ],
+               },
+
                 {label: 'Name', name: 'name'},
                 //https://editor.datatables.net/examples/dates/dates.html
                 {
@@ -130,7 +168,11 @@
                 {data: 'birthday', type : 'date',  render : function(data){
                     return moment(data).format('YYYY-MM-DD');
                     }}
-            ]
+            ],
+            order: [1, 'asc'],
+            rowGroup: {
+                dataSrc: 'id'
+            }
         })
     });
 

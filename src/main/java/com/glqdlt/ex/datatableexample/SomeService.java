@@ -21,7 +21,9 @@ public class SomeService {
             }
             return new User(i, "some-user-" + i, someSex, new Date());
         }).collect(Collectors.toList());
+        this.data.add(new User(1, "haha", User.UserSex.Man, new Date()));
     }
+
 
     public List<User> findUsers() {
         return data;
@@ -31,7 +33,7 @@ public class SomeService {
         return data.stream().filter(x -> x.getName().equals(keyWord)).collect(Collectors.toList());
     }
 
-    public void removeUser(int  no) {
+    public void removeUser(int no) {
         data.remove(no);
     }
 }
