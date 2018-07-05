@@ -173,7 +173,16 @@
             rowGroup: {
                 dataSrc: 'id'
             }
-        })
+        });
+
+        table.on("click", "tbody tr", function(){
+            console.log(this);
+        });
+
+        table.on("click", "tbody td", function(){
+            console.log(this);
+        });
+
     });
 
     function searchName() {
